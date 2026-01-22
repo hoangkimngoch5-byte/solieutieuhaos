@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Video + Power BI xen kẽ</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      background: black;
+      overflow: hidden;
+    }
+
+    iframe {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 100vw;
+      height: 100vh;
+      transform: translate(-50%, -50%);
+      border: none;
+      background: black;
+      object-fit: contain; /* Giữ tỉ lệ, không tràn */
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    /* Nếu TV overscan (zoom nhẹ), thu nhỏ lại một chút */
+    @media (min-width: 1500px) {
+      iframe {
+        transform: translate(-50%, -50%) scale(0.98);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <iframe
+    id="player"
+    src="https://player.vimeo.com/video/1119332063?autoplay=1&muted=1"
+    allow="autoplay; fullscreen"
+    allowfullscreen
+  ></iframe>
+
+  <script src="https://player.vimeo.com/api/player.js"></script>
+  <script>
+    const playlist = [
+      {type:"vimeo", id:"1119332063"},
+       {type:"powerbi", url:"https://app.powerbi.com/view?r=eyJrIjoiYmYyMDg4NmMtMWUzOS00NjVlLWIyYTYtYjkyZDAxN2QxYTk4IiwidCI6IjQ2NmQwOWI5LTRkNGItNGQ1MC1iMmY1LTM3YTNjMWY3ZWI4YiIsImMiOjEwfQ%3D%3D"},
+      //KHSX
+       {type:"powerbi", url:"https://app.powerbi.com/view?r=eyJrIjoiODIxNGVhYmMtNjYzYS00N2I0LWIzZjYtNTU1YzUyNzM0ZWMxIiwidCI6IjQ2NmQwOWI5LTRkNGItNGQ1MC1iMmY1LTM3YTNjMWY3ZWI4YiIsImMiOjEwfQ%3D%3D"},
+      //ETP
+        {type:"powerbi", url:"https://app.powerbi.com/view?r=eyJrIjoiMTgwMDEwZDItOGNiMy00OTA0LWJmMjMtMThiNTdjNjJjODU1IiwidCI6IjQ2NmQwOWI5LTRkNGItNGQ1MC1iMmY1LTM3YTNjMWY3ZWI4YiIsImMiOjEwfQ%3D%3D"},
+      //Ho 221
+      {type:"powerbi", url:"https://app.powerbi.com/view?r=eyJrIjoiNjM4Yjc3NDgtZGU5OS00MjZlLTk2NGItZWEwMjBiODljMzY0IiwidCI6IjQ2NmQwOWI5LTRkNGItNGQ1MC1iMmY1LTM3YTNjMWY3ZWI4YiIsImMiOjEwfQ%3D%3D"},
+      // Bọc hạt
+      {type:"powerbi", url:"https://app.powerbi.com/view?r=eyJrIjoiMDg0OWRiYjctNTA1NS00YzZjLWE0ZGEtN2MxYjU3MGU3M2FkIiwidCI6IjQ2NmQwOWI5LTRkNGItNGQ1MC1iMmY1LTM3YTNjMWY3ZWI4YiIsImMiOjEwfQ%3D%3D"},
+      // PT
+       {type:"powerbi", url:"https://app.powerbi.com/view?r=eyJrIjoiOTRkMDA5ZWUtMjUyYS00OGMwLTljYWUtYzhlYzJjYTdjYThlIiwidCI6IjQ2NmQwOWI5LTRkNGItNGQ1MC1iMmY1LTM3YTNjMWY3ZWI4YiIsImMiOjEwfQ%3D%3D"},
+      // 111
+     {type:"powerbi", url:"https://app.powerbi.com/view?r=eyJrIjoiZDRlZTM3MWItZWU5YS00OTJjLThmZDAtODkwMjg0YmZiYjJlIiwidCI6IjQ2NmQwOWI5LTRkNGItNGQ1MC1iMmY1LTM3YTNjMWY3ZWI4YiIsImMiOjEwfQ%3D%3D"},
+      // Mức
+      {type:"powerbi", url:"https://app.powerbi.com/view?r=eyJrIjoiMGQwZjUyZDItOGJjNy00MjlmLWFkODUtZjg3ZTRiOWJlZTg0IiwidCI6IjQ2NmQwOWI5LTRkNGItNGQ1MC1iMmY1LTM3YTNjMWY3ZWI4YiIsImMiOjEwfQ%3D%3D"},
+      // KPI
+        {type:"powerbi", url:"https://app.powerbi.com/view?r=eyJrIjoiZjJiN2FiOGQtNjg5MC00MjgxLTg4ODUtZWIzYTVmZWE0NmNmIiwidCI6IjQ2NmQwOWI5LTRkNGItNGQ1MC1iMmY1LTM3YTNjMWY3ZWI4YiIsImMiOjEwfQ%3D%3D"},
+      // 201010
+       {type:"powerbi", url:"https://app.powerbi.com/view?r=eyJrIjoiYmYyMDg4NmMtMWUzOS00NjVlLWIyYTYtYjkyZDAxN2QxYTk4IiwidCI6IjQ2NmQwOWI5LTRkNGItNGQ1MC1iMmY1LTM3YTNjMWY3ZWI4YiIsImMiOjEwfQ%3D%3D"},
+      //KHSX
+       {type:"powerbi", url:"https://app.powerbi.com/view?r=eyJrIjoiZGUyZDNlMGYtMzNkOS00MjcyLThmYWQtOTZkZDY4YjE5NDFhIiwidCI6IjQ2NmQwOWI5LTRkNGItNGQ1MC1iMmY1LTM3YTNjMWY3ZWI4YiIsImMiOjEwfQ%3D%3D"},
+      //212
+      {type:"powerbi", url:"https://app.powerbi.com/view?r=eyJrIjoiNjM4Yjc3NDgtZGU5OS00MjZlLTk2NGItZWEwMjBiODljMzY0IiwidCI6IjQ2NmQwOWI5LTRkNGItNGQ1MC1iMmY1LTM3YTNjMWY3ZWI4YiIsImMiOjEwfQ%3D%3D"},
+      // Bọc hạt
+      {type:"powerbi", url:"https://app.powerbi.com/view?r=eyJrIjoiN2Q5NDRjYmQtZWEyYi00Zjk3LWE5YjMtZDJiNTkyNGE1YTE4IiwidCI6IjQ2NmQwOWI5LTRkNGItNGQ1MC1iMmY1LTM3YTNjMWY3ZWI4YiIsImMiOjEwfQ%3D%3D"},
+      // 211
+
+      {type:"powerbi", url:"https://app.powerbi.com/view?r=eyJrIjoiMDg0OWRiYjctNTA1NS00YzZjLWE0ZGEtN2MxYjU3MGU3M2FkIiwidCI6IjQ2NmQwOWI5LTRkNGItNGQ1MC1iMmY1LTM3YTNjMWY3ZWI4YiIsImMiOjEwfQ%3D%3D"},
+      // PT
+       {type:"powerbi", url:"https://app.powerbi.com/view?r=eyJrIjoiYzQyY2Y1MGEtNzk4NS00YjQ1LWJjMWItNzg5MzljNzEzZWZhIiwidCI6IjQ2NmQwOWI5LTRkNGItNGQ1MC1iMmY1LTM3YTNjMWY3ZWI4YiIsImMiOjEwfQ%3D%3D"},
+      //411
+     {type:"powerbi", url:"https://app.powerbi.com/view?r=eyJrIjoiYmYyMDg4NmMtMWUzOS00NjVlLWIyYTYtYjkyZDAxN2QxYTk4IiwidCI6IjQ2NmQwOWI5LTRkNGItNGQ1MC1iMmY1LTM3YTNjMWY3ZWI4YiIsImMiOjEwfQ%3D%3D"},
+      //KHSX
+       {type:"powerbi", url:"https://app.powerbi.com/view?r=eyJrIjoiMGVjOGM2NjMtNjAzMC00YzIxLWI2NWItY2Q3ZGM3MjY0NmVhIiwidCI6IjQ2NmQwOWI5LTRkNGItNGQ1MC1iMmY1LTM3YTNjMWY3ZWI4YiIsImMiOjEwfQ%3D%3D"},
+      //KHSX
+    ];
+
+    let index = 0;
+    let player = new Vimeo.Player(document.getElementById("player"));
+    let timer, refresher;
+
+    player.on("ended", next);
+
+    function load(item){
+      clearTimeout(timer);
+      clearInterval(refresher);
+      const f = document.getElementById("player");
+
+     if(item.type === "vimeo"){
+    const old = document.getElementById("player");
+    old.remove();
+
+    const iframe = document.createElement("iframe");
+    iframe.id = "player";
+    iframe.allow = "autoplay; fullscreen";
+    iframe.allowFullscreen = true;
+    iframe.src = `https://player.vimeo.com/video/${item.id}?autoplay=1&muted=1`;
+
+    document.body.appendChild(iframe);
+
+    iframe.onload = () => {
+        player = new Vimeo.Player(iframe);
+        player.on("ended", next);
+        player.play();
+    };
+}
+      else if(item.type === "powerbi"){
+        player = null;
+        f.src = item.url;
+        timer = setTimeout(next, 5*60*1000);
+        refresher = setInterval(() => { f.src = item.url }, 120*1000);
+      }
+    }
+
+    function next(){
+      index = (index + 1) % playlist.length;
+      load(playlist[index]);
+    }
+  </script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
